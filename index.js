@@ -62,7 +62,7 @@ recognition.onerror = function(event) {
 
 recognition.onend = (event) => {
     document.bgColor = '#fff';
-    rec.recording = true;
+    if (rec) rec.recording = true;
 };
 
 startBtn.onclick = () => {
@@ -78,10 +78,14 @@ kuromoji.builder({ dicPath: "lib/kuromoji.js/dict/" }).build(function (err, toke
 });
 
 
-var rec = new Recording(function(data){
-    if(detectClap(data) && this.recording){
-        recognition.start();
-        document.bgColor = 'rgb('+Math.random()*255+','+Math.random()*255+','+Math.random()*255+')';
-        this.recording = false;
-    }
+var rec;
+
+document.querySelector("#clap-detect").addEventListener("click", (e)=>{
+    rec = new Recording(function(data){
+        if(detectClap(data) && this.recording){
+            recognition.start();
+            document.bgColor = 'rgb('+Math.random()*255+','+Math.random()*255+','+Math.random()*255+')';
+            this.recording = false;
+        }
+    });
 });
